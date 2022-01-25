@@ -6,6 +6,7 @@ import FriendsList from "./components/FriendsList";
 import AddFriends from "./components/AddFriends";
 import Logout from "./components/Logout";
 import styled from "styled-components";
+import PrivateRoute from "./components/PrivateRoute";
 
 const NavbarContainer = styled.nav`
   height: 3rem;
@@ -31,19 +32,21 @@ const StyledLink = styled(Link)`
 `;
 
 function App() {
+  const token = localStorage.getItem("token");
+
   return (
     <Router>
       <NavbarContainer>
-        <StyledLink to="/login">Login</StyledLink>
-        <StyledLink to="/friends">Friends</StyledLink>
-        <StyledLink to="/friends/add">Add Friends</StyledLink>
-        <StyledLink to="/logout">Logout</StyledLink>
+        {!token && <StyledLink to="/login">Login</StyledLink>}
+        {token && <StyledLink to="/friends">Friends</StyledLink>}
+        {token && <StyledLink to="/friends/add">Add Friends</StyledLink>}
+        {token && <StyledLink to="/logout">Logout</StyledLink>}
       </NavbarContainer>
       <div className="App">
         <Switch>
-          <Route path="/friends/add" component={AddFriends} />
-          <Route path="/logout" component={Logout} />
-          <Route path="/friends" component={FriendsList} />
+          <PrivateRoute path="/friends/add" component={AddFriends} />
+          <PrivateRoute path="/logout" component={Logout} />
+          <PrivateRoute path="/friends" component={FriendsList} />
           <Route path="/login" component={Login} />
           <Route path="/" component={Login} />
         </Switch>

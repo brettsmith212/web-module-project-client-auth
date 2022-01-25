@@ -57,7 +57,11 @@ function AddFriends() {
     axiosWithAuth()
       .post("/friends", value)
       .then((res) => {
-        console.log(res);
+        setValue({
+          name: "",
+          email: "",
+          age: "",
+        });
       })
       .catch((err) => {
         console.error(err);
